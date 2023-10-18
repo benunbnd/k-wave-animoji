@@ -26,7 +26,7 @@ class AvatarManager {
     if (this.scene.children.length === 1) {
       this.scene.children[0].removeFromParent();
     }
-    let gltf = await loadGltf(url);
+    let gltf: any = await loadGltf(url);
     gltf = gltf.scene;
     // const fbxLoader = new FBXLoader();
 

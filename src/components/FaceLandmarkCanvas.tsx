@@ -74,7 +74,7 @@ const FaceLandmarkCanvas = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-center">
+      <div className="flex justify-center relative">
         <video
           className="w-full h-auto"
           ref={videoRef}
@@ -83,6 +83,7 @@ const FaceLandmarkCanvas = () => {
           autoPlay={true}
           playsInline={true}
         ></video>
+        <div className='w-full h-full absolute bg-black opacity-80'></div>
         {videoSize && (
           <>
               <AvatarCanvas
