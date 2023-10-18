@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { loadGltf } from "@/utils/loaders";
 import { FaceLandmarkerResult } from "@mediapipe/tasks-vision";
 import { decomposeMatrix } from "../utils/decomposeMatrix";
@@ -25,15 +26,26 @@ class AvatarManager {
     if (this.scene.children.length === 1) {
       this.scene.children[0].removeFromParent();
     }
-    const gltf = await loadGltf(url);
-    gltf.scene.traverse((obj) => (obj.frustumCulled = false));
-    this.scene.add(gltf.scene);
+    let gltf = await loadGltf(url);
+    gltf = gltf.scene;
+    // const fbxLoader = new FBXLoader();
+
+    // const gltf: any = await new Promise((resolve, reject) => {
+    //   fbxLoader.load(url, resolve, () => {}, reject);
+    // });
+
+    gltf.name = 'Head';
+
+    console.log (gltf.name);
+
+    gltf.traverse((obj: any) => (obj.frustumCulled = false));
+    this.scene.add(gltf);
 
     // make hands invisible
-    const LeftHand = this.scene.getObjectByName("LeftHand");
-    const RightHand = this.scene.getObjectByName("RightHand");
-    LeftHand?.scale.set(0, 0, 0);
-    RightHand?.scale.set(0, 0, 0);
+    // const LeftHand = this.scene.getObjectByName("LeftHand");
+    // const RightHand = this.scene.getObjectByName("RightHand");
+    // LeftHand?.scale.set(0, 0, 0);
+    // RightHand?.scale.set(0, 0, 0);
     this.isModelLoaded = true;
   };
 
@@ -60,12 +72,14 @@ class AvatarManager {
 
         for (const { score, categoryName } of blendShapes) {
           let updatedCategoryName = categoryName;
+          console.log (updatedCategoryName);
           if (flipped && categoryName.includes("Left")) {
             updatedCategoryName = categoryName.replace("Left", "Right");
           } else if (flipped && categoryName.includes("Right")) {
             updatedCategoryName = categoryName.replace("Right", "Left");
           }
           const index = morphTargetDictionary[updatedCategoryName];
+          console.log (index);
           morphTargetInfluences[index] = score;
         }
       }
@@ -83,20 +97,20 @@ class AvatarManager {
     const quaternion = new THREE.Quaternion().setFromEuler(euler);
     if (flipped) {
       // flip to x axis
-      quaternion.y *= -1;
-      quaternion.z *= -1;
-      translation.x *= -1;
     }
+      quaternion.z *= -2;
+      quaternion.y *= -2;
+      translation.x *= -1;
 
     const Head = this.scene.getObjectByName("Head");
     Head?.quaternion.slerp(quaternion, 1.0);
 
-    const root = this.scene.getObjectByName("AvatarRoot");
+    Head?.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / -6);
     // values empirically calculated
-    root?.position.set(
+    Head?.position.set(
       translation.x * 0.01,
-      translation.y * 0.01,
-      (translation.z + 50) * 0.02
+      (translation.y * 0.01) + 0.66 + (translation.z * 0.0125),
+      (translation.z + 54) * 0.0225
     );
   };
 }

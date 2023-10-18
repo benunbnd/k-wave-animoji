@@ -48,7 +48,7 @@ const AvatarCanvas = ({ width, height, url }: AvatarCanvasProps) => {
         <ambientLight />
         <directionalLight />
         <OrbitControls
-          target={[0, 0.6, 0]}
+          target={[0, 0, 0]}
           enableDamping={false}
           enableRotate={false}
           enableZoom={false}
@@ -60,7 +60,7 @@ const AvatarCanvas = ({ width, height, url }: AvatarCanvasProps) => {
             <Text3D
               font={"../assets/fonts/Open_Sans_Condensed_Bold.json"}
               scale={0.05}
-              position={[-0.1, 0.6, 0]}
+              position={[-0.1, 0, 0]}
               bevelEnabled
               bevelSize={0.05}
             >

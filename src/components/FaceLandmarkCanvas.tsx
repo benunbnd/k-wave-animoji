@@ -13,7 +13,7 @@ const FaceLandmarkCanvas = () => {
   const [avatarView, setAvatarView] = useState(true);
   const [showAvatarCreator, setShowAvatarCreator] = useState(false);
   const [modelUrl, setModelUrl] = useState(
-    "https://models.readyplayer.me/6460691aa35b2e5b7106734d.glb?morphTargets=ARKit"
+    "/models/male-head-flipped.glb"
   );
   const [videoSize, setVideoSize] = useState<{
     width: number;
@@ -74,20 +74,6 @@ const FaceLandmarkCanvas = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-center gap-10 mt-5 mb-10">
-        <button
-          className="self-end bg-purple-700 hover:bg-purple-600 transition text-white px-2 py-1 rounded mb-2 shadow-md text-sm sm:text-base"
-          onClick={toggleAvatarView}
-        >
-          {avatarView ? "Switch to Landmark View" : "Switch to Avatar View"}
-        </button>
-        <button
-          className="self-end bg-purple-700 hover:bg-purple-600 transition text-white px-2 py-1 rounded mb-2 shadow-md text-sm sm:text-base"
-          onClick={toggleAvatarCreatorView}
-        >
-          {"Customize your Avatar!"}
-        </button>
-      </div>
       <div className="flex justify-center">
         <video
           className="w-full h-auto"
@@ -99,25 +85,11 @@ const FaceLandmarkCanvas = () => {
         ></video>
         {videoSize && (
           <>
-            {showAvatarCreator && (
-              <ReadyPlayerCreator
-                width={videoSize.width}
-                height={videoSize.height}
-                handleComplete={handleAvatarCreationComplete}
-              />
-            )}
-            {avatarView ? (
               <AvatarCanvas
                 width={videoSize.width}
                 height={videoSize.height}
                 url={modelUrl}
               />
-            ) : (
-              <DrawLandmarkCanvas
-                width={videoSize.width}
-                height={videoSize.height}
-              />
-            )}
           </>
         )}
       </div>
