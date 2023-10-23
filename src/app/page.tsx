@@ -2,6 +2,7 @@
 
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import RenderCanvas from "../components/RendererCanvas";
 
 // Use dynamic loading to fix document undefined error
 const FaceLandmarkCanvas = dynamic(
@@ -12,6 +13,11 @@ const FaceLandmarkCanvas = dynamic(
 );
 
 export default function Home() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const renderParam = urlParams.get("render");
+  if (renderParam) {
+    return <RenderCanvas />;
+  }
   return (
     <div className="flex flex-col items-center px-2 pt-10 bg-gradient-to-r from-purple-500 to-blue-800 min-h-screen text-white">
       <Head>
