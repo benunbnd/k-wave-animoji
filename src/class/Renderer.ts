@@ -8,20 +8,17 @@ export default class Renderer {
   frameData = {};
   frameLength = -1;
   renderComplete = false;
-  scene: THREE.Scene;
+  scene?: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
 
   constructor({
     frameLength = 100,
     fps = 24,
-    scene,
   }: {
     frameLength: number;
     fps: number;
-    scene: THREE.Scene;
   }) {
-    this.scene = scene;
     this.fps = fps;
     this.frameLength = frameLength;
     this.renderer = new THREE.WebGLRenderer();
@@ -30,11 +27,11 @@ export default class Renderer {
 
     this.camera = new THREE.PerspectiveCamera();
     (window as any).getFrameData = this.getFrameData;
-    this.init();
     console.log("Renderer initialized");
   }
 
-  init() {
+  init(scene: THREE.Scene) {
+    this.scene = scene;
     let canvas = this.renderer.domElement;
     document.body.appendChild(canvas);
     canvas.id = "renderCanvas";
@@ -49,7 +46,7 @@ export default class Renderer {
   }
 
   update() {
-    this.scene.rotateY(0.01);
+    this.scene!.rotateY(0.01);
   }
 
   scheduleNextFrame() {
@@ -66,6 +63,7 @@ export default class Renderer {
   }
 
   startRenderLoop() {
+    console.log("start render loop");
     this.renderComplete = false;
     this.scheduleNextFrame();
   }
@@ -77,7 +75,7 @@ export default class Renderer {
   async processFrame() {
     this.frameCount++;
     this.update();
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene!, this.camera);
     await this.captureFrame();
   }
 

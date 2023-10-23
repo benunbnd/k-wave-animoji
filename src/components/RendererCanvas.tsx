@@ -10,12 +10,30 @@ export default function RenderCanvas() {
   const kRendererRef = useRef<Renderer>();
 
   useEffect(() => {
+    setIsLoading(true);
+    const avatarManager = AvatarManager.getInstance();
+    avatarManager
+      .loadModel("/models/male-head-flipped.glb")
+      .then(() => {
+        setScene(avatarManager.getScene());
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  }, []);
+
+  useEffect(() => {
     console.log("scene changed");
-    if (!kRendererRef.current && scene) {
-      kRendererRef.current = new Renderer({ frameLength: 50, fps: 24, scene });
+    if (!kRendererRef.current) {
+      console.log("create renderer");
+      kRendererRef.current = new Renderer({ frameLength: 50, fps: 24 });
+    }
+    if (scene && kRendererRef.current.scene === undefined) {
+      kRendererRef.current.init(scene);
       kRendererRef.current.startRenderLoop();
     }
-  }, [scene]);
+  }, [scene, kRendererRef]);
 
   return <></>;
 }
