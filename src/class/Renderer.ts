@@ -26,8 +26,8 @@ export default class Renderer {
     this.renderer.setPixelRatio(2);
 
     this.camera = new THREE.PerspectiveCamera();
-    (window as any).getFrameData = this.getFrameData;
-    console.log("Renderer initialized");
+    (window as any).getFrameData = this.getFrameData.bind(this);
+    //console.log("Renderer initialized");
   }
 
   init(scene: THREE.Scene) {
@@ -63,7 +63,7 @@ export default class Renderer {
   }
 
   startRenderLoop() {
-    console.log("start render loop");
+    //console.log("start render loop");
     this.renderComplete = false;
     this.scheduleNextFrame();
   }
@@ -105,7 +105,7 @@ export default class Renderer {
   // Accessed from Puppeteer
   getFrameData() {
     this.frameWaiting = false;
-
+    console.info("FRAME_DATA_REQUESTED", this.frameData);
     return this.frameData;
   }
 }
