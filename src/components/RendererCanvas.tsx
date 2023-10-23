@@ -1,12 +1,13 @@
 import AvatarManager from "@/class/AvatarManager";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
-import RenderScene from "./RenderScene";
 
+import Renderer from "@/class/Renderer";
 export default function RenderCanvas() {
   const [scene, setScene] = useState<THREE.Scene | null>();
   const [isLoading, setIsLoading] = useState(true);
   const avatarManager = AvatarManager.getInstance();
+  let kRenderer: Renderer | null = null;
   useEffect(() => {
     console.log("mount rendercanvas");
     avatarManager
@@ -22,24 +23,11 @@ export default function RenderCanvas() {
 
   useEffect(() => {
     console.log("scene changed");
+    if (!kRenderer && scene) {
+      kRenderer = new Renderer({ frameLength: 50, fps: 24, scene });
+      kRenderer.startRenderLoop();
+    }
   }, [scene]);
 
-  return (
-    <>
-      <Canvas
-        id="renderCanvas"
-        frameloop="never"
-        camera={{ fov: 30, position: [0, 0.5, 1] }}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {scene && <RenderScene scene={scene} />}
-      </Canvas>
-    </>
-  );
+  return <></>;
 }
