@@ -27,7 +27,7 @@ export default function RenderCanvas() {
     console.log("scene changed");
     if (!kRendererRef.current) {
       console.log("create renderer");
-      kRendererRef.current = new Renderer({ frameLength: 50, fps: 24 });
+      kRendererRef.current = new Renderer({ frameLength: 12, fps: 24 });
     }
     if (scene && kRendererRef.current.scene === undefined) {
       kRendererRef.current.init(scene);
