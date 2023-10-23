@@ -105,7 +105,7 @@ export default class Renderer {
   // Accessed from Puppeteer
   getFrameData() {
     this.frameWaiting = false;
-    console.info("FRAME_DATA_REQUESTED", this.frameData);
+    console.info("FRAME_DATA_REQUESTED");
     return this.frameData;
   }
 }
