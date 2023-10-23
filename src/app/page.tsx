@@ -13,8 +13,11 @@ const FaceLandmarkCanvas = dynamic(
 );
 
 export default function Home() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const renderParam = urlParams.get("render");
+  let renderParam;
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams((window as any)!.location.search);
+    renderParam = urlParams.get("render");
+  }
   if (renderParam) {
     return <RenderCanvas />;
   }
