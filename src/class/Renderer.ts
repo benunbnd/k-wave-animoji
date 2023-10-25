@@ -23,7 +23,7 @@ export default class Renderer {
     this.frameLength = frameLength;
     this.renderer = new THREE.WebGLRenderer();
     //antialias
-    //    this.renderer.setPixelRatio(2);
+    this.renderer.setPixelRatio(1); //be explicit so we aren't surprised
 
     this.camera = new THREE.PerspectiveCamera();
     (window as any).getFrameData = this.getFrameData.bind(this);
